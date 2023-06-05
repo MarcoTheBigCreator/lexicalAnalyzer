@@ -1,0 +1,16 @@
+{
+  "name": "lexical-analyzer",
+  "version": "1.0.0",
+  "description": "Reads a txt file and their characters and compare to the transition table returning a txt file of types of data and errors",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "test",
+    "dev": "nodemon index.js"
+  },
+  "author": "Marco Rodriguez",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
