@@ -3,7 +3,7 @@ import readline from "readline";
 import { States, Finals } from "./table.js";
 
 const wordsFile = "words.txt";
-const typesFile = "output.txt";
+const typesFile = "types.txt";
 const errorsFile = "error.txt";
 
 // Create a readable stream to read the input file line by line
@@ -29,7 +29,6 @@ let carry = false;
 const rsl = [];
 
 const analyzeChar = (char, position) => {
-  console.log(state);
   const currState = States[state];
   let matched = false;
   if (currState.moves) {
@@ -56,15 +55,22 @@ const analyzeChar = (char, position) => {
     console.log("   final -> ", current);
     state = 0;
     current = "";
+    return true;
   }
   if (!matched) {
     if (currState.will === "end") {
+      if (currState.predates) {
+        if (Finals[currState.predates] === rsl[rsl.length - 1].type) {
+          rsl.pop();
+        }
+      }
       rsl.push({ type: Finals[state], value: current });
       carry = false;
       matched = true;
-      console.log("   final -> ", current);
+      console.log("--> final -> ", current);
       state = 0;
       current = "";
+      return true;
     } else {
       throw new Error(`Invalid character: ${char}, at position ${position}`);
     }
@@ -84,7 +90,10 @@ rl.on("line", (line) => {
       }
       const pos = index + 1;
       console.log("   State -> ", state, " - Pos -> ", index);
-      analyzeChar(char, pos);
+      const n = analyzeChar(char, pos);
+      if (n) {
+        index--;
+      }
     }
     lineCount++;
     // Write the results to the output file
@@ -93,22 +102,30 @@ rl.on("line", (line) => {
     );
   } catch (error) {
     lineCount++;
-    writeStream.write(
-      error.data.map((token) => JSON.stringify(token)).join("\n") + "\n"
-    );
-    errorStream.write("Error on line " + lineCount + " -> " + error.error);
-    console.error("Error on line " + lineCount + " -> " + error.error);
+    // writes correct ones
+    if (rsl) {
+      writeStream.write(
+        rsl.map((token) => JSON.stringify(token)).join("\n") + "\n"
+      );
+    }
+    // writes error
+    errorStream.write("Error on line " + lineCount + " -> " + error);
+    console.error("Error on line " + lineCount + " -> " + error);
   }
 });
 
 // Close the write stream when all lines have been processed
 rl.on("close", () => {
   if (carry) {
+    console.error(
+      "Error on line " + lineCount + " -> " + current + " was not closed"
+    );
     errorStream.write(
-      "Error on line " + lineCount + " -> " + current[0] + " was not closed"
+      "Error on line " + lineCount + " -> " + current + " was not closed"
     );
   }
   console.log(rsl);
+  console.log("Finished");
   writeStream.end();
   errorStream.end();
 });

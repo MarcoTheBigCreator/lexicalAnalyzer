@@ -17,8 +17,11 @@ export const States = {
       "\\|": 26,
       "&": 28,
       "{": 30,
+      "}": 31,
       "\\[": 33,
+      "\\]": 34,
       "\\(": 36,
+      "\\)": 37,
       ";": 39,
       ":": 40,
     },
@@ -44,6 +47,7 @@ export const States = {
   6: {
     moves: { "\\d": 6 },
     will: "end",
+    predates: 4,
   },
   7: {
     moves: { "^[^']*$": 8, "'": 9 },
@@ -78,6 +82,7 @@ export const States = {
   },
   16: {
     will: "end",
+    predates: 15,
   },
   17: {
     moves: { "=": 18 },
@@ -85,6 +90,7 @@ export const States = {
   },
   18: {
     will: "end",
+    predates: 17,
   },
   19: {
     moves: { "=": 20 },
@@ -92,6 +98,7 @@ export const States = {
   },
   20: {
     will: "end",
+    predates: 19,
   },
   21: {
     moves: { "=": 22 },
@@ -99,6 +106,7 @@ export const States = {
   },
   22: {
     will: "end",
+    predates: 21,
   },
   23: {
     will: "end",
@@ -122,31 +130,28 @@ export const States = {
     will: "end",
   },
   30: {
-    moves: { "^[^}]*$": 31, "}": 32 },
-    will: "carry",
+    will: "end",
   },
   31: {
-    moves: { "^[^}]*$": 31, "}": 32 },
+    will: "end",
   },
   32: {
     will: "end",
   },
   33: {
-    moves: { "^[^\\)]*$": 34, "\\]": 35 },
-    will: "carry",
+    will: "end",
   },
   34: {
-    moves: { "^[^\\]]*$": 34, "\\]": 35 },
+    moves: "end",
   },
   35: {
     will: "end",
   },
   36: {
-    moves: { "^.": 37, "\\)": 38 },
-    will: "carry",
+    will: "end",
   },
   37: {
-    moves: { "^.": 37, "\\)": 38 },
+    will: "end",
   },
   38: {
     will: "end",
@@ -165,24 +170,27 @@ export const Finals = {
   4: "INTEGER",
   6: "FLOAT",
   9: "STRING",
-  10: "DIVIDE",
+  10: "ARITHMETIC OPERATOR",
   14: "COMMENT",
-  15: "EQUAL",
-  16: "IS EQUALS",
-  17: "MORE",
-  18: "MORE OR EQUAL",
-  19: "LESSER",
-  20: "LESSER OR EQUAL",
-  21: "NEGATIVE",
-  22: "DIFFERENT",
-  23: "MULTIPLY",
-  24: "PLUS",
-  25: "MINUS",
-  27: "OR",
-  29: "AND",
-  32: "BRACKETS",
-  35: "[]",
-  38: "PARENTASIS",
+  15: "ARTIHMETIC OPERATOR",
+  16: "RELATIONAL OPERATOR",
+  17: "RELATIONAL OPERATOR",
+  18: "RELATIONAL OPERATOR",
+  19: "RELATIONAL OPERATOR",
+  20: "RELATIONAL OPERATOR",
+  21: "LOGICAL OPERATOR",
+  22: "RELATIONAL OPERATOR",
+  23: "ARITHMETIC OPERATOR",
+  24: "ARITHMETIC OPERATOR",
+  25: "ARITHMETIC OPERATOR",
+  27: "LOGICAL OPERATOR",
+  29: "LOGICAL OPERATOR",
+  30: "OPEN BRACKETS",
+  31: "CLOSE BRACKETS",
+  33: " OPEN [",
+  34: "CLOSE ]",
+  36: "OPEN PARENTESIS",
+  37: "CLOSE PARENTESIS",
   39: "SEMI-COLON",
   40: "COLON",
 };
